@@ -8,11 +8,7 @@ st.write("Paste your text below and get a short summary instantly.")
 text = st.text_area("Paste your text here")
 
 # Load Google AI model
-@st.cache_resource
-def load_model():
-    return pipeline("summarization", model="sshleifer/distilbart-cnn-12-6")
-
-summarizer = load_model()
+summarizer = pipeline("text2text-generation", model="google/flan-t5-base")
 
 # Button
 if st.button("Generate Summary"):
@@ -25,7 +21,7 @@ if st.button("Generate Summary"):
             do_sample=False
         )
 
-        st.write(result[0]['summary_text'])
+        st.write(result[0]['generated_text'])
         st.success("Summary generated successfully!")
     else:
         st.write("Please enter some text")
